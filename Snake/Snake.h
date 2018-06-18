@@ -7,6 +7,7 @@ class Snake
 {
 	private:
 		std::vector<Entity> body;
+		Direction dir;
 		bool checkCollision();
 		void eat();
 		void updateScore();
