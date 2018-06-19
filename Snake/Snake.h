@@ -6,13 +6,13 @@
 class Snake
 {
 	private:
-		std::vector<Entity> body;
+		std::vector<Entity*> body;
 		Direction dir;
 		bool checkCollision();
 		void eat();
 		void updateScore();
 	public:
 		Snake();
-		~Snake();
 		void moveSnake(Direction dir);
+		std::vector<Entity*> getBody();
 };

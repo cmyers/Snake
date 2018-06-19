@@ -8,7 +8,7 @@ class Grid
 		std::vector<std::vector<Entity*>> entities;
 	public:
 		Grid();
-		~Grid();
+		Grid(int xSize, int ySize);
 		Grid(std::vector<std::vector<Entity*>> entities);
 		Entity* getEntity(int x, int y);
 		void addEntity(Entity* entity, int x, int y);

@@ -3,12 +3,15 @@
 
 class Game
 {
-private:
-	Grid grid;
-	void render();
-	void input();
-	void logic();
-public:
-	Game(Grid grid);
-	bool gameLoop();
+	private:
+		Grid* grid;
+		void renderStart();
+		void renderGrid(int xSize, int ySize);
+		void mainRender();
+		void input();
+		void logic();
+	public:
+		Game();
+		Game(Grid* grid);
+		bool gameLoop();
 };
