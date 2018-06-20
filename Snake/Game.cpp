@@ -48,7 +48,8 @@ void Game::renderGrid(int xSize, int ySize)
 				//TODO: check if entity exists at this location through 2d vector coords?
 				//look at grid which will contain entities passed to it such as the body of a snake
 				Entity* entity = this->grid->getEntity(x, y);
-				if (entity != NULL)
+
+				if (entity != nullptr)
 				{
 					std::cout << "X";
 				}

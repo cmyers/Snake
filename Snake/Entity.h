@@ -6,12 +6,9 @@ class Entity
 		int id;
 		bool collidable;
 	public:
-		Entity() {}
-		~Entity() {}
+		Entity();
+		~Entity();
+		Entity(int id, bool collidable);
 
-		Entity(int id, bool collidable)
-		{
-			this->id = id;
-			this->collidable = collidable;
-		}
+		
 };
