@@ -1,24 +1,15 @@
 #include "stdafx.h"
 #include "Snake.h"
 
-
-
 Snake::Snake(Grid* grid)
 {
 	this->grid = grid;
+	this->dir = Direction::LEFT;
 	for (int i = 0; i < 4; i++)
 	{
-		this->body.push_back(new Entity(i, true));
+		this->body.push_back(new Entity(i, i+5, 5, true));
+		this->grid->addEntity(this->body.at(i));
 	}
-	
-	for (int i = 0; i < this->body.size(); i++)
-	{
-		//set initial position in grid
-		this->grid->addEntity(this->body.at(i), i + 5, 5);
-	}
-
-	headPos.x = 5;
-	headPos.y = 5;
 }
 
 bool Snake::checkCollision()
@@ -35,52 +26,65 @@ void Snake::updateScore()
 {
 
 }
-		
-void Snake::moveSnake(Direction dir)
-{	//add new snake head to relevant position and remove tail
+
+void Snake::deleteTail()
+{
+	Entity* eTail = this->body.at(this->body.size() - 1);
+	this->grid->removeEntity(eTail);
+	this->body.pop_back();
+}
+
+bool Snake::addHead(Direction dir)
+{
+	int x = this->body.at(0)->getX();
+	int y = this->body.at(0)->getY();
+
 	switch (dir)
 	{
 		case Direction::UP:
+			if (this->dir == Direction::DOWN)
+			{
+				return false;
+			}
+			y--;
 			break;
 		case Direction::DOWN:
-		{
-			//delete tail
-			Entity * entity = this->body.at(this->body.size() - 1);
-			if (this->grid->removeEntity(entity))
+			if (this->dir == Direction::UP)
 			{
-				this->body.pop_back();
+				return false;
 			}
-
-			//add new head in direction of movement
-			Entity * newHead = new Entity(0, true);
-			this->body.push_front(newHead);
-			headPos.y++;
-			this->grid->addEntity(newHead, headPos.x, headPos.y);
+			y++;
 			break;
-		}
 		case Direction::LEFT:
-		{
-			//TODO: move this to a new function
-
-			//delete tail
-			Entity* entity = this->body.at(this->body.size() - 1);
-			if (this->grid->removeEntity(entity))
+			if (this->dir == Direction::RIGHT)
 			{
-				this->body.pop_back();
+				return false;
 			}
-			
-			//add new head in direction of movement
-			Entity * newHead = new Entity(0, true);
-			this->body.push_front(newHead);
-			headPos.x--;
-			this->grid->addEntity(newHead, headPos.x, headPos.y);
+			x--;
 			break;
-		}
 		case Direction::RIGHT:
+			if (this->dir == Direction::LEFT)
+			{
+				return false;
+			}
+			x++;
 			break;
 		case Direction::STOP:
 		default:
 			break;
-			
+	}
+
+	this->dir = dir;
+	Entity* newHead = new Entity(0, x, y, true);
+	this->body.push_front(newHead);
+	this->grid->addEntity(newHead);
+	return true;
+}
+		
+void Snake::moveSnake(Direction dir)
+{
+	if (this->addHead(dir))
+	{
+		this->deleteTail();
 	}
 }
