@@ -14,5 +14,7 @@ class Grid
 		void removeEntityAt(int x, int y);
 		void addEntity(Entity* entity);
 		void removeEntity(Entity* entity);
+		int getWidth();
+		int getHeight();
 
 };

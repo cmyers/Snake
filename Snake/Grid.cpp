@@ -20,6 +20,16 @@ Entity* Grid::getEntityAt(int x, int y)
 	return this->entities.at(y).at(x);
 }
 
+int Grid::getHeight()
+{
+	return this->entities.size();
+}
+
+int Grid::getWidth()
+{
+	return this->entities[0].size();
+}
+
 void Grid::removeEntity(Entity* entity)
 {
 	int x = entity->getX();

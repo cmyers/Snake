@@ -46,28 +46,52 @@ bool Snake::addHead(Direction dir)
 			{
 				return false;
 			}
+
 			y--;
+
+			if (y < 1)
+			{
+				y = this->grid->getHeight() - 1;
+			}
 			break;
 		case Direction::DOWN:
 			if (this->dir == Direction::UP)
 			{
 				return false;
 			}
+
 			y++;
+
+			if (y >= this->grid->getHeight() - 1)
+			{
+				y = 1;
+			}
 			break;
 		case Direction::LEFT:
 			if (this->dir == Direction::RIGHT)
 			{
 				return false;
 			}
+
 			x--;
+
+			if (x < 1)
+			{
+				x = this->grid->getWidth() - 1;
+			}
 			break;
 		case Direction::RIGHT:
 			if (this->dir == Direction::LEFT)
 			{
 				return false;
 			}
+
 			x++;
+
+			if (x >= this->grid->getWidth() -1 )
+			{
+				x = 1;
+			}
 			break;
 		case Direction::STOP:
 		default:
@@ -87,4 +111,9 @@ void Snake::moveSnake(Direction dir)
 	{
 		this->deleteTail();
 	}
+}
+
+Direction Snake::getDirection()
+{
+	return this->dir;
 }

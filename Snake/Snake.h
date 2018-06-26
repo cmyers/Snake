@@ -18,4 +18,5 @@ class Snake
 		Snake(Grid* grid);
 		void moveSnake(Direction dir);
 		void eat();
+		Direction getDirection();
 };

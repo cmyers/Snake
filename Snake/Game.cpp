@@ -5,6 +5,8 @@
 #include <conio.h>
 #include "Enums.h"
 #include "Snake.h"
+#include "SFML/Graphics.hpp"
+#include <sstream>
 
 #define KEY_UP 119
 #define KEY_DOWN 115
@@ -18,8 +20,23 @@ Game::Game(Grid* grid, Snake* snake)
 {
 	this->grid = grid;
 	this->snake = snake;
+	sfWindow = new sf::RenderWindow(sf::VideoMode(600, 600), "SFML");
+	this->sfText = sf::Text();
+	this->sfFont = sf::Font();
+
+	if (!sfFont.loadFromFile("resources/Consolas.ttf"))
+	{
+		// handle error
+	}
+
+	this->sfText.setFont(this->sfFont);
+	
+	this->sfText.setFillColor(sf::Color::Red);
+	this->sfText.setCharacterSize(16);
+	
 };
 
+// TOCHECK: is this still required in some form?
 int Game::input()
 {
 	if (_kbhit())
@@ -28,36 +45,28 @@ int Game::input()
 	}
 }
 
+// TOCHECK: pull keyboard input methods out of here?
 bool Game::update(int key) 
 {
-	if (key == 0)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 	{
-		return true;
+		
 	}
-	switch (key) {
-		case KEY_UP:
-		{
-			this->snake->moveSnake(Direction::UP);
-			break;
-		}
-		case KEY_DOWN:
-		{
-			this->snake->moveSnake(Direction::DOWN);
-			break;
-		}
-		case KEY_LEFT:
-		{
-			this->snake->moveSnake(Direction::LEFT);
-			break;
-		}
-		case KEY_RIGHT:
-		{
-			this->snake->moveSnake(Direction::RIGHT);
-			break;
-		}
-		default:
-			return false;
-			break;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		this->snake->moveSnake(Direction::DOWN);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		this->snake->moveSnake(Direction::UP);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		this->snake->moveSnake(Direction::LEFT);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		this->snake->moveSnake(Direction::RIGHT);
 	}
 	return true;
 }
@@ -69,21 +78,24 @@ void Game::renderStart()
 
 void Game::renderGrid(int xSize, int ySize)
 {
+	std::stringstream sStream;
+	sf::String sfString;
+	
 	for (int y = 0; y < ySize; y++)
 	{
 		for (int x = 0; x < xSize; x++)
 		{
 			if (y == 0 || x == 0 || y == ySize-1)
 			{
-				std::cout << "#";
+				sStream <<  "#";
 				if (x == xSize - 1) 
 				{
-					std::cout << std::endl;
+					sStream << std::endl;
 				}
 			} 
 			else if (x == xSize-1)
 			{
-				std::cout << "#" << std::endl;
+				sStream << "#" << std::endl;
 			}
 			else
 			{
@@ -93,31 +105,51 @@ void Game::renderGrid(int xSize, int ySize)
 
 				if (entity != nullptr)
 				{
-					std::cout << "X";
+					sStream << "X";
 				}
 				else
 				{
-					std::cout << " ";
+					sStream << " ";
 				}
 			}
 		}
 	}
+	sfString = sf::String(sStream.str());
+	sfText.setString(sfString);
 }
 
 void Game::mainRender()
 {
-	this->renderGrid(50, 25);
+	this->renderGrid(this->grid->getWidth(), this->grid->getHeight());
 }
 
 void Game::gameLoop()
 {
 	this->renderStart();
-	while (this->running)
+
+	while (this->sfWindow->isOpen() && this->running)
 	{
+		sf::Event event;
+
+		while (this->sfWindow->pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				this->sfWindow->close();
+				break;
+			}
+		}
+
 		char key = this->input();
 		this->running = this->update(key);
 		this->mainRender();
-		if (system("CLS")) system("clear");
+
+		this->sfWindow->clear();
+		this->sfWindow->draw(this->sfText);
+		this->sfWindow->display();
+
+		
 	}
 	
 }
