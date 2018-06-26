@@ -10,10 +10,10 @@ class Snake
 		std::deque<Entity*> body;
 		Grid* grid; //snake controls and knows where it is in the world, so has access to grid and can move around it
 		Direction dir;
-		bool checkCollision();
+		bool checkCollision(int x, int y);
 		void updateScore();
 		void deleteTail();
-		void addHead();
+		bool addHead();
 		int speed;
 	public:
 		Snake(Grid* grid);

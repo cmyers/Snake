@@ -12,8 +12,24 @@ Snake::Snake(Grid* grid)
 	}
 }
 
-bool Snake::checkCollision()
+bool Snake::checkCollision(int x, int y)
 {
+	Entity* entity = this->grid->getEntityAt(x, y);
+
+	for (int i = 0; i < this->body.size(); i++)
+	{
+		if(entity == this->body[i])
+		{ 
+			return true;
+		}
+	}
+
+	if (entity != nullptr)
+	{
+		//TODO: check Entity type and decide how to proceed?
+		return true;
+	}
+
 	return false;
 }
 
@@ -44,7 +60,7 @@ void Snake::deleteTail()
 	this->body.pop_back();
 }
 
-void Snake::addHead()
+bool Snake::addHead()
 {
 	int x = this->body.at(0)->getX();
 	int y = this->body.at(0)->getY();
@@ -88,16 +104,27 @@ void Snake::addHead()
 			break;
 	}
 
-	this->dir = dir;
-	Entity* newHead = new Entity(0, x, y, true);
-	this->body.push_front(newHead);
-	this->grid->addEntity(newHead);
+	if (!this->checkCollision(x, y))
+	{
+		Entity* newHead = new Entity(0, x, y, true);
+		this->body.push_front(newHead);
+		this->grid->addEntity(newHead);
+		return true;
+	}
+	return false;
+	
 }
 		
 void Snake::moveSnake()
 {
-	this->addHead();
-	this->deleteTail();
+	if (this->addHead())
+	{
+		this->deleteTail();
+	}
+	else
+	{
+		bool debug = true;
+	}
 }
 
 void Snake::changeDirection(Direction dir)
