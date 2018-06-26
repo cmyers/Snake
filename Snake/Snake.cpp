@@ -4,7 +4,6 @@
 Snake::Snake(Grid* grid)
 {
 	this->grid = grid;
-	this->speed = 
 	this->dir = Direction::LEFT;
 	for (int i = 0; i < 4; i++)
 	{

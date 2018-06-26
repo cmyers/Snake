@@ -14,7 +14,6 @@ class Game
 		void renderStart();
 		void renderGrid(int xSize, int ySize);
 		void mainRender();
-		int input();
 		bool update(); //TODO: make this virtual so we can inherit and implement in a SnakeGame class
 		bool running;
 		

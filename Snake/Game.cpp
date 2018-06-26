@@ -31,13 +31,7 @@ Game::Game(Grid* grid, Snake* snake)
 	
 };
 
-// TOCHECK: is this still required in some form?
-int Game::input()
-{
-	return 0;
-}
-
-// TOCHECK: pull keyboard input methods out of here?
+// TOCHECK: move keyboard input into input method?
 bool Game::update() 
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
