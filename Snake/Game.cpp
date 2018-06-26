@@ -15,7 +15,7 @@ Game::Game(Grid* grid, Snake* snake)
 {
 	this->grid = grid;
 	this->snake = snake;
-	sfWindow = new sf::RenderWindow(sf::VideoMode(600, 600), "SFML");
+	sfWindow = new sf::RenderWindow(sf::VideoMode(600, 600), "Snake");
 	this->sfText = sf::Text();
 	this->sfFont = sf::Font();
 
@@ -55,9 +55,7 @@ bool Game::update()
 		this->snake->changeDirection(Direction::RIGHT);
 	}
 
-	this->snake->moveSnake();
-
-	return true;
+	return this->snake->moveSnake();
 }
 
 void Game::renderStart()
@@ -65,8 +63,10 @@ void Game::renderStart()
 	this->running = true;
 }
 
-void Game::renderGrid(int xSize, int ySize)
+void Game::renderGrid()
 {
+	int xSize = this->grid->getWidth();
+	int ySize = this->grid->getHeight();
 	std::stringstream sStream;
 	sf::String sfString;
 	
@@ -107,7 +107,8 @@ void Game::renderGrid(int xSize, int ySize)
 
 void Game::mainRender()
 {
-	this->renderGrid(this->grid->getWidth(), this->grid->getHeight());
+	// TODO: Add score render
+	this->renderGrid();
 }
 
 void Game::gameLoop()
@@ -142,7 +143,5 @@ void Game::gameLoop()
 		this->sfWindow->clear();
 		this->sfWindow->draw(this->sfText);
 		this->sfWindow->display();
-		
 	}
-	
 }

@@ -115,15 +115,16 @@ bool Snake::addHead()
 	
 }
 		
-void Snake::moveSnake()
+bool Snake::moveSnake()
 {
 	if (this->addHead())
 	{
 		this->deleteTail();
+		return true;
 	}
 	else
 	{
-		bool debug = true;
+		return false;
 	}
 }
 

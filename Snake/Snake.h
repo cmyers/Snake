@@ -17,7 +17,7 @@ class Snake
 		int speed;
 	public:
 		Snake(Grid* grid);
-		void moveSnake();
+		bool moveSnake();
 		void eat();
 		void changeDirection(Direction dir);
 		Direction getDirection();
