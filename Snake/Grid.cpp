@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "Grid.h"
-#include <vector>
-#include "Entity.h"
 
 Grid::Grid() {}
 

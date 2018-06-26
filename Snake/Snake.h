@@ -13,10 +13,14 @@ class Snake
 		bool checkCollision();
 		void updateScore();
 		void deleteTail();
-		bool addHead(Direction dir);
+		void addHead();
+		int speed;
 	public:
 		Snake(Grid* grid);
-		void moveSnake(Direction dir);
+		void moveSnake();
 		void eat();
+		void changeDirection(Direction dir);
 		Direction getDirection();
+		int getSpeed();
+		void setSpeed(int speed);
 };

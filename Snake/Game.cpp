@@ -1,12 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
-#include "Grid.h"
-#include <iostream>
-#include <conio.h>
-#include "Enums.h"
-#include "Snake.h"
-#include "SFML/Graphics.hpp"
 #include <sstream>
+#include "SFML/Graphics.hpp"
 
 #define KEY_UP 119
 #define KEY_DOWN 115
@@ -39,35 +34,35 @@ Game::Game(Grid* grid, Snake* snake)
 // TOCHECK: is this still required in some form?
 int Game::input()
 {
-	if (_kbhit())
-	{
-		return _getch();
-	}
+	return 0;
 }
 
 // TOCHECK: pull keyboard input methods out of here?
-bool Game::update(int key) 
+bool Game::update() 
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 	{
 		
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		this->snake->moveSnake(Direction::DOWN);
+		this->snake->changeDirection(Direction::DOWN);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		this->snake->moveSnake(Direction::UP);
+		this->snake->changeDirection(Direction::UP);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		this->snake->moveSnake(Direction::LEFT);
+		this->snake->changeDirection(Direction::LEFT);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		this->snake->moveSnake(Direction::RIGHT);
+		this->snake->changeDirection(Direction::RIGHT);
 	}
+
+	this->snake->moveSnake();
+
 	return true;
 }
 
@@ -87,7 +82,7 @@ void Game::renderGrid(int xSize, int ySize)
 		{
 			if (y == 0 || x == 0 || y == ySize-1)
 			{
-				sStream <<  "#";
+				sStream << "#";
 				if (x == xSize - 1) 
 				{
 					sStream << std::endl;
@@ -99,8 +94,6 @@ void Game::renderGrid(int xSize, int ySize)
 			}
 			else
 			{
-				//TODO: check if entity exists at this location through 2d vector coords?
-				//look at grid which will contain entities passed to it such as the body of a snake
 				Entity* entity = this->grid->getEntityAt(x, y);
 
 				if (entity != nullptr)
@@ -127,8 +120,12 @@ void Game::gameLoop()
 {
 	this->renderStart();
 
+	sf::Clock clock;
+	sf::Time elapsedTime;
+
 	while (this->sfWindow->isOpen() && this->running)
 	{
+		elapsedTime += clock.getElapsedTime();
 		sf::Event event;
 
 		while (this->sfWindow->pollEvent(event))
@@ -141,14 +138,16 @@ void Game::gameLoop()
 			}
 		}
 
-		char key = this->input();
-		this->running = this->update(key);
-		this->mainRender();
-
+ 		if (elapsedTime.asMilliseconds() > (16.6*1000) )
+		{
+			this->running = this->update();
+			this->mainRender();
+			elapsedTime = clock.restart();
+		}
+		
 		this->sfWindow->clear();
 		this->sfWindow->draw(this->sfText);
 		this->sfWindow->display();
-
 		
 	}
 	

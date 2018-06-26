@@ -4,6 +4,7 @@
 Snake::Snake(Grid* grid)
 {
 	this->grid = grid;
+	this->speed = 
 	this->dir = Direction::LEFT;
 	for (int i = 0; i < 4; i++)
 	{
@@ -22,6 +23,16 @@ void Snake::eat()
 
 }
 
+void Snake::setSpeed(int speed)
+{
+	this->speed = speed;
+}
+
+int Snake::getSpeed()
+{
+	return this->speed;
+}
+
 void Snake::updateScore()
 {
 
@@ -34,61 +45,41 @@ void Snake::deleteTail()
 	this->body.pop_back();
 }
 
-bool Snake::addHead(Direction dir)
+void Snake::addHead()
 {
 	int x = this->body.at(0)->getX();
 	int y = this->body.at(0)->getY();
 
-	switch (dir)
+	switch (this->dir)
 	{
 		case Direction::UP:
-			if (this->dir == Direction::DOWN)
-			{
-				return false;
-			}
-
 			y--;
 
-			if (y < 1)
+			if (y == 0)
 			{
-				y = this->grid->getHeight() - 1;
+				y = this->grid->getHeight() - 2;
 			}
 			break;
 		case Direction::DOWN:
-			if (this->dir == Direction::UP)
-			{
-				return false;
-			}
-
 			y++;
 
-			if (y >= this->grid->getHeight() - 1)
+			if (y == this->grid->getHeight() - 1)
 			{
 				y = 1;
 			}
 			break;
 		case Direction::LEFT:
-			if (this->dir == Direction::RIGHT)
-			{
-				return false;
-			}
-
 			x--;
 
-			if (x < 1)
+			if (x == 0)
 			{
-				x = this->grid->getWidth() - 1;
+				x = this->grid->getWidth() - 2;
 			}
 			break;
 		case Direction::RIGHT:
-			if (this->dir == Direction::LEFT)
-			{
-				return false;
-			}
-
 			x++;
 
-			if (x >= this->grid->getWidth() -1 )
+			if (x == this->grid->getWidth() - 1)
 			{
 				x = 1;
 			}
@@ -102,15 +93,47 @@ bool Snake::addHead(Direction dir)
 	Entity* newHead = new Entity(0, x, y, true);
 	this->body.push_front(newHead);
 	this->grid->addEntity(newHead);
-	return true;
 }
 		
-void Snake::moveSnake(Direction dir)
+void Snake::moveSnake()
 {
-	if (this->addHead(dir))
+	this->addHead();
+	this->deleteTail();
+}
+
+void Snake::changeDirection(Direction dir)
+{
+	switch (dir)
 	{
-		this->deleteTail();
+		case Direction::UP:
+			if (this->dir == Direction::DOWN)
+			{
+				return;
+			}
+			break;
+		case Direction::DOWN:
+			if (this->dir == Direction::UP)
+			{
+				return;
+			}	
+			break;
+		case Direction::LEFT:
+			if (this->dir == Direction::RIGHT)
+			{
+				return;
+			}
+			break;
+		case Direction::RIGHT:
+			if (this->dir == Direction::LEFT)
+			{
+				return;
+			}
+			break;
+		case Direction::STOP:
+		default:
+			break;	
 	}
+	this->dir = dir;
 }
 
 Direction Snake::getDirection()
