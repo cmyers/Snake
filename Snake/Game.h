@@ -1,13 +1,12 @@
 #pragma once
-#include "Grid.h"
-#include "Snake.h"
+#include "EntityManager.h"
+#include "Pickup.h"
 #include "SFML/Graphics.hpp"
 
 class Game
 {
 	private:
-		Grid* grid;
-		Snake* snake; //TODO: set this to player class which Snake will inherit from
+		EntityManager* entityManager;
 		sf::RenderWindow* sfWindow;
 		sf::Font sfFont;
 		sf::Text sfText;
@@ -19,6 +18,6 @@ class Game
 		
 	public:
 		Game();
-		Game(Grid* grid, Snake* snake);
+		Game(EntityManager* entityManager);
 		void gameLoop();
 };

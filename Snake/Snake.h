@@ -15,10 +15,13 @@ class Snake
 		void deleteTail();
 		bool addHead();
 		int speed;
+		bool isSnakeBody(Entity* entity);
 	public:
 		Snake(Grid* grid);
+		Snake();
+		~Snake();
 		bool moveSnake();
-		void eat();
+		void eat(Entity* entity);
 		void changeDirection(Direction dir);
 		Direction getDirection();
 		int getSpeed();

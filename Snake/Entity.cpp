@@ -25,3 +25,8 @@ int Entity::getY()
 {
 	return this->y;
 }
+
+bool Entity::isConsumable()
+{
+	return false;
+}

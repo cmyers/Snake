@@ -14,6 +14,5 @@ class Entity
 		Entity(int id, int x, int y, bool collidable);
 		int getX();
 		int getY();
-
-		
+		bool virtual isConsumable();
 };

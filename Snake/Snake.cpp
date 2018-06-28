@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Snake.h"
+#include "Pickup.h"
 
 Snake::Snake(Grid* grid)
 {
@@ -12,30 +13,41 @@ Snake::Snake(Grid* grid)
 	}
 }
 
+bool Snake::isSnakeBody(Entity* entity)
+{
+	for (int i = 0; i < this->body.size(); i++)
+	{
+		if (entity == this->body[i])
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 bool Snake::checkCollision(int x, int y)
 {
 	Entity* entity = this->grid->getEntityAt(x, y);
 
-	for (int i = 0; i < this->body.size(); i++)
+	if (this->isSnakeBody(entity))
 	{
-		if(entity == this->body[i])
-		{ 
-			return true;
-		}
+		return true;
 	}
 
 	if (entity != nullptr)
 	{
-		//TODO: check Entity type and decide how to proceed?
-		return true;
+		if (entity->isConsumable())
+		{
+			this->eat(entity);
+		}
 	}
-
 	return false;
 }
 
-void Snake::eat()
+void Snake::eat(Entity* entity)
 {
-
+	this->grid->removeEntity(entity);
+	this->addHead();
 }
 
 void Snake::setSpeed(int speed)

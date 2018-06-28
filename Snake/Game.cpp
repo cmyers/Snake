@@ -11,13 +11,16 @@
 
 Game::Game() {}
 
-Game::Game(Grid* grid, Snake* snake) 
+Game::Game(EntityManager* entityManager) 
 {
-	this->grid = grid;
-	this->snake = snake;
-	sfWindow = new sf::RenderWindow(sf::VideoMode(600, 600), "Snake");
+	this->entityManager = entityManager;
+
+	this->sfWindow = new sf::RenderWindow(sf::VideoMode(600, 600), "Snake");
+
 	this->sfText = sf::Text();
 	this->sfFont = sf::Font();
+
+	this->entityManager->spawnPickup();
 
 	if (!sfFont.loadFromFile("resources/Consolas.ttf"))
 	{
@@ -25,10 +28,8 @@ Game::Game(Grid* grid, Snake* snake)
 	}
 
 	this->sfText.setFont(this->sfFont);
-	
 	this->sfText.setFillColor(sf::Color::Red);
 	this->sfText.setCharacterSize(16);
-	
 };
 
 // TOCHECK: move keyboard input into input method?
@@ -40,22 +41,22 @@ bool Game::update()
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		this->snake->changeDirection(Direction::DOWN);
+		this->entityManager->getSnake()->changeDirection(Direction::DOWN);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		this->snake->changeDirection(Direction::UP);
+		this->entityManager->getSnake()->changeDirection(Direction::UP);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		this->snake->changeDirection(Direction::LEFT);
+		this->entityManager->getSnake()->changeDirection(Direction::LEFT);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		this->snake->changeDirection(Direction::RIGHT);
+		this->entityManager->getSnake()->changeDirection(Direction::RIGHT);
 	}
 
-	return this->snake->moveSnake();
+	return this->entityManager->getSnake()->moveSnake();
 }
 
 void Game::renderStart()
@@ -65,8 +66,8 @@ void Game::renderStart()
 
 void Game::renderGrid()
 {
-	int xSize = this->grid->getWidth();
-	int ySize = this->grid->getHeight();
+	int xSize = this->entityManager->getGrid()->getWidth();
+	int ySize = this->entityManager->getGrid()->getHeight();
 	std::stringstream sStream;
 	sf::String sfString;
 	
@@ -88,7 +89,7 @@ void Game::renderGrid()
 			}
 			else
 			{
-				Entity* entity = this->grid->getEntityAt(x, y);
+				Entity* entity = this->entityManager->getGrid()->getEntityAt(x, y);
 
 				if (entity != nullptr)
 				{
@@ -108,6 +109,7 @@ void Game::renderGrid()
 void Game::mainRender()
 {
 	// TODO: Add score render
+
 	this->renderGrid();
 }
 

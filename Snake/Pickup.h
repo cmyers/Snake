@@ -1,15 +1,15 @@
 #pragma once
 #include "Entity.h"
-#include <iostream>
+#include "Grid.h"
 
-class Pickup : Entity
+class Pickup : public Entity
 {
 	private:
 		int points;
 		std::string name;
 	public:
-		Pickup(std::string name);
-		~Pickup();
+		Pickup(int id, int x, int y, bool collidable, std::string name, int points);
 		std::string getName();
 		int getPoints();
+		bool isConsumable();
 };
