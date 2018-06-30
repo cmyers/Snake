@@ -2,25 +2,21 @@
 #include "Game.h"
 #include <sstream>
 #include "SFML/Graphics.hpp"
+#include "Snake.h"
 
-#define KEY_UP 119
-#define KEY_DOWN 115
-#define KEY_LEFT 97
-#define KEY_RIGHT 100
-#define ESC 27
+sf::RenderWindow renderWindow;
 
-Game::Game() {}
+Game::Game() : sfWindow(renderWindow) {}
 
-Game::Game(EntityManager* entityManager) 
+Game::~Game() {} 
+
+Game::Game(sf::RenderWindow& sfWindow, EntityManager entityManager) : sfWindow(sfWindow), entityManager(entityManager)
 {
-	this->entityManager = entityManager;
-
-	this->sfWindow = new sf::RenderWindow(sf::VideoMode(600, 600), "Snake");
 
 	this->sfText = sf::Text();
 	this->sfFont = sf::Font();
 
-	this->entityManager->spawnPickup();
+	this->entityManager.spawnPickup();
 
 	if (!sfFont.loadFromFile("resources/Consolas.ttf"))
 	{
@@ -41,22 +37,22 @@ bool Game::update()
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		this->entityManager->getSnake()->changeDirection(Direction::DOWN);
+		this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::DOWN);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		this->entityManager->getSnake()->changeDirection(Direction::UP);
+		this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::UP);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		this->entityManager->getSnake()->changeDirection(Direction::LEFT);
+		this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::LEFT);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		this->entityManager->getSnake()->changeDirection(Direction::RIGHT);
+		this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::RIGHT);
 	}
 
-	return this->entityManager->getSnake()->moveSnake();
+	return this->entityManager.getEntityGroup<Snake>()->moveSnake();
 }
 
 void Game::renderStart()
@@ -66,8 +62,8 @@ void Game::renderStart()
 
 void Game::renderGrid()
 {
-	int xSize = this->entityManager->getGrid()->getWidth();
-	int ySize = this->entityManager->getGrid()->getHeight();
+	int xSize = this->entityManager.getGrid().getWidth();
+	int ySize = this->entityManager.getGrid().getHeight();
 	std::stringstream sStream;
 	sf::String sfString;
 	
@@ -89,7 +85,7 @@ void Game::renderGrid()
 			}
 			else
 			{
-				Entity* entity = this->entityManager->getGrid()->getEntityAt(x, y);
+				Entity* entity = this->entityManager.getGrid().getEntityAt(x, y);
 
 				if (entity != nullptr)
 				{
@@ -120,17 +116,17 @@ void Game::gameLoop()
 	sf::Clock clock;
 	sf::Time elapsedTime;
 
-	while (this->sfWindow->isOpen() && this->running)
+	while (this->sfWindow.isOpen() && this->running)
 	{
 		elapsedTime += clock.getElapsedTime();
 		sf::Event event;
 
-		while (this->sfWindow->pollEvent(event))
+		while (this->sfWindow.pollEvent(event))
 		{
 			switch (event.type)
 			{
 			case sf::Event::Closed:
-				this->sfWindow->close();
+				this->sfWindow.close();
 				break;
 			}
 		}
@@ -142,8 +138,8 @@ void Game::gameLoop()
 			elapsedTime = clock.restart();
 		}
 		
-		this->sfWindow->clear();
-		this->sfWindow->draw(this->sfText);
-		this->sfWindow->display();
+		this->sfWindow.clear();
+		this->sfWindow.draw(this->sfText);
+		this->sfWindow.display();
 	}
 }

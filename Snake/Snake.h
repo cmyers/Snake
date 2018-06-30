@@ -1,29 +1,29 @@
-#pragma once
-#include "Entity.h"
-#include "Enums.h"
-#include "Grid.h"
-#include <deque>
+#ifndef SNAKE_HPP
+#define SNAKE_HPP
 
-class Snake
+#include "Enums.h"
+#include "EntityManager.h"
+#include "EntityGroup.h"
+
+class Snake : public EntityGroup
 {
 	private:
-		std::deque<Entity*> body;
-		Grid* grid; //snake controls and knows where it is in the world, so has access to grid and can move around it
 		Direction dir;
 		bool checkCollision(int x, int y);
 		void updateScore();
 		void deleteTail();
 		bool addHead();
 		int speed;
-		bool isSnakeBody(Entity* entity);
 	public:
-		Snake(Grid* grid);
 		Snake();
 		~Snake();
+		Snake(EntityManager &entityManager);
 		bool moveSnake();
-		void eat(Entity* entity);
+		void eat(Entity *entity);
 		void changeDirection(Direction dir);
 		Direction getDirection();
 		int getSpeed();
 		void setSpeed(int speed);
 };
+
+#endif

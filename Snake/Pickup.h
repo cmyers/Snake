@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PICKUP_HPP
+#define PICKUP_HPP
+
 #include "Entity.h"
 #include "Grid.h"
 
@@ -13,3 +15,5 @@ class Pickup : public Entity
 		int getPoints();
 		bool isConsumable();
 };
+
+#endif

@@ -2,34 +2,23 @@
 #include "Snake.h"
 #include "Pickup.h"
 
-Snake::Snake(Grid* grid)
+Snake::Snake() : EntityGroup(entityManager) {}
+Snake::~Snake() {}
+
+Snake::Snake(EntityManager& entityManager) : EntityGroup(entityManager)
 {
-	this->grid = grid;
-	this->dir = Direction::LEFT;
 	for (int i = 0; i < 4; i++)
 	{
-		this->body.push_back(new Entity(i, i+5, 5, true));
-		this->grid->addEntity(this->body.at(i));
+		this->entities.push_back(new Entity(i, i+5, 5, true));
+		this->entityManager.getGrid().addEntity(this->entities.at(i));
 	}
-}
-
-bool Snake::isSnakeBody(Entity* entity)
-{
-	for (int i = 0; i < this->body.size(); i++)
-	{
-		if (entity == this->body[i])
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 bool Snake::checkCollision(int x, int y)
 {
-	Entity* entity = this->grid->getEntityAt(x, y);
+	Entity* entity = this->entityManager.getGrid().getEntityAt(x, y);
 
-	if (this->isSnakeBody(entity))
+	if (this->isInGroup(entity))
 	{
 		return true;
 	}
@@ -46,7 +35,7 @@ bool Snake::checkCollision(int x, int y)
 
 void Snake::eat(Entity* entity)
 {
-	this->grid->removeEntity(entity);
+	this->entityManager.getGrid().removeEntity(entity);
 	this->addHead();
 }
 
@@ -67,15 +56,15 @@ void Snake::updateScore()
 
 void Snake::deleteTail()
 {
-	Entity* eTail = this->body.at(this->body.size() - 1);
-	this->grid->removeEntity(eTail);
-	this->body.pop_back();
+	Entity* eTail = this->entities.at(this->entities.size() - 1);
+	this->entityManager.getGrid().removeEntity(eTail);
+	this->entities.pop_back();
 }
 
 bool Snake::addHead()
 {
-	int x = this->body.at(0)->getX();
-	int y = this->body.at(0)->getY();
+	int x = this->entities.at(0)->getX();
+	int y = this->entities.at(0)->getY();
 
 	switch (this->dir)
 	{
@@ -84,13 +73,13 @@ bool Snake::addHead()
 
 			if (y == 0)
 			{
-				y = this->grid->getHeight() - 2;
+				y = this->entityManager.getGrid().getHeight() - 2;
 			}
 			break;
 		case Direction::DOWN:
 			y++;
 
-			if (y == this->grid->getHeight() - 1)
+			if (y == this->entityManager.getGrid().getHeight() - 1)
 			{
 				y = 1;
 			}
@@ -100,13 +89,13 @@ bool Snake::addHead()
 
 			if (x == 0)
 			{
-				x = this->grid->getWidth() - 2;
+				x = this->entityManager.getGrid().getWidth() - 2;
 			}
 			break;
 		case Direction::RIGHT:
 			x++;
 
-			if (x == this->grid->getWidth() - 1)
+			if (x == this->entityManager.getGrid().getWidth() - 1)
 			{
 				x = 1;
 			}
@@ -119,8 +108,8 @@ bool Snake::addHead()
 	if (!this->checkCollision(x, y))
 	{
 		Entity* newHead = new Entity(0, x, y, true);
-		this->body.push_front(newHead);
-		this->grid->addEntity(newHead);
+		this->entities.push_front(newHead);
+		this->entityManager.getGrid().addEntity(newHead);
 		return true;
 	}
 	return false;

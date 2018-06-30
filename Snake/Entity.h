@@ -1,5 +1,5 @@
-#pragma once
-#include "Entity.h"
+#ifndef ENTITY_HPP
+#define ENTITY_HPP
 
 class Entity
 {
@@ -16,3 +16,5 @@ class Entity
 		int getY();
 		bool virtual isConsumable();
 };
+
+#endif

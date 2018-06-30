@@ -1,4 +1,6 @@
-#pragma once
+#ifndef GRID_HPP
+#define GRID_HPP
+
 #include "Entity.h"
 #include <vector>
 
@@ -18,3 +20,5 @@ class Grid
 		int getHeight();
 
 };
+
+#endif

@@ -1,15 +1,21 @@
 #include "stdafx.h"
-#include "EntityManager.h"
+#include "Pickup.h"
+#include "Snake.h"
 
-EntityManager::EntityManager(Grid *grid)
+//Snake snake;
+//Grid grid;
+
+EntityManager::EntityManager() {} //: grid(grid), entityGroup(snake) {}
+
+EntityManager::~EntityManager()
 {
-	this->grid = grid;
-	this->snake = new Snake(grid);
+	delete this->entityGroup;
 }
 
-EntityManager::EntityManager() {}
-
-EntityManager::~EntityManager() {}
+EntityManager::EntityManager(Grid grid) : grid(grid)
+{
+	this->entityGroup = new Snake((*this));
+}
 
 void EntityManager::spawnPickup() // TODO: Create an entity manager class to handle these types of methods?
 {
@@ -17,18 +23,31 @@ void EntityManager::spawnPickup() // TODO: Create an entity manager class to han
 
 	while (pickup == nullptr)
 	{
-		int x = rand() % ((this->grid->getWidth() - 1) + 1);
-		int y = rand() % ((this->grid->getHeight() - 1) + 1);
+		int x = rand() % ((this->grid.getWidth() - 1) + 1);
+		int y = rand() % ((this->grid.getHeight() - 1) + 1);
 
-		if (this->grid->getEntityAt(x, y) == nullptr)
+		if (this->grid.getEntityAt(x, y) == nullptr)
 		{
 			pickup = new Pickup(0, x, y, true, "Egg", 10);
 			break;
 		}
 	}
 
-	this->grid->addEntity(pickup);
+	this->grid.addEntity(pickup);
 }
+
+Grid EntityManager::getGrid()
+{
+	return this->grid;
+}
+
+template<typename T>
+T* EntityManager::getEntityGroup()
+{
+	return dynamic_cast<T*>(this->entityGroup);
+}
+
+template Snake* EntityManager::getEntityGroup<Snake>();
 
 //void EntityManager::consumePickup(Entity *entity)
 //{
@@ -40,19 +59,4 @@ void EntityManager::spawnPickup() // TODO: Create an entity manager class to han
 //			return;
 //		}
 //	}
-//}
-
-Grid* EntityManager::getGrid()
-{
-	return this->grid;
-}
-
-Snake* EntityManager::getSnake()
-{
-	return this->snake;
-}
-
-//std::vector<Entity**> EntityManager::getPickups()
-//{
-//	return this->pickups;
 //}

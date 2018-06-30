@@ -1,13 +1,15 @@
-#pragma once
-#include "EntityManager.h"
+#ifndef GAME_HPP
+#define GAME_HPP
+
 #include "Pickup.h"
+#include "EntityManager.h"
 #include "SFML/Graphics.hpp"
 
 class Game
 {
 	private:
-		EntityManager* entityManager;
-		sf::RenderWindow* sfWindow;
+		EntityManager entityManager;
+		sf::RenderWindow& sfWindow;
 		sf::Font sfFont;
 		sf::Text sfText;
 		void renderStart();
@@ -18,6 +20,9 @@ class Game
 		
 	public:
 		Game();
-		Game(EntityManager* entityManager);
+		~Game();
+		Game(sf::RenderWindow &sfWindow, EntityManager entityManager);
 		void gameLoop();
 };
+
+#endif
