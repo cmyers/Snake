@@ -10,7 +10,7 @@ Game::Game() : sfWindow(renderWindow) {}
 
 Game::~Game() {}
 
-Game::Game(sf::RenderWindow& sfWindow) : sfWindow(sfWindow), entityManager(entityManager)
+Game::Game(sf::RenderWindow& sfWindow) : sfWindow(sfWindow)
 {
 	this->entityManager.loadEntities();
 
@@ -29,28 +29,46 @@ Game::Game(sf::RenderWindow& sfWindow) : sfWindow(sfWindow), entityManager(entit
 	this->sfText.setCharacterSize(16);
 };
 
-//// TOCHECK: move keyboard input into input method?
-bool Game::update()
+sf::Keyboard::Key Game::getInput()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::DOWN);
+		return sf::Keyboard::Down;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::UP);
+		return sf::Keyboard::Up;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::LEFT);
+		return sf::Keyboard::Left;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::RIGHT);
+		return sf::Keyboard::Right;
+	}
+}
+
+bool Game::update()
+{
+	sf::Keyboard::Key key = this->getInput();
+
+	switch (key)
+	{
+		case sf::Keyboard::Down:
+			this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::DOWN);
+			break;
+		case sf::Keyboard::Up:
+			this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::UP);
+			break;
+		case sf::Keyboard::Left:
+			this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::LEFT);
+			break;
+		case sf::Keyboard::Right:
+			this->entityManager.getEntityGroup<Snake>()->changeDirection(Direction::RIGHT);
+			break;
+		default:
+			break;
 	}
 
 	return this->entityManager.getEntityGroup<Snake>()->moveSnake();

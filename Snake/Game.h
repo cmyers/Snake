@@ -15,6 +15,7 @@ private:
 	void renderStart();
 	void renderGrid();
 	void mainRender();
+	sf::Keyboard::Key getInput();
 	bool update(); //TODO: make this virtual so we can inherit and implement in a SnakeGame class
 	bool running;
 
