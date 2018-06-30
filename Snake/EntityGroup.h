@@ -13,7 +13,7 @@ namespace SnakeGame {
 	{
 	protected:
 		std::deque<Entity*> entities;
-		bool virtual isInGroup(Entity *entity);
+		virtual bool isInGroup(Entity *entity);
 		EntityManager &entityManager;
 	public:
 		EntityGroup();
