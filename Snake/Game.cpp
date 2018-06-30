@@ -8,15 +8,16 @@ sf::RenderWindow renderWindow;
 
 Game::Game() : sfWindow(renderWindow) {}
 
-Game::~Game() {} 
+Game::~Game() {}
 
-Game::Game(sf::RenderWindow& sfWindow, EntityManager entityManager) : sfWindow(sfWindow), entityManager(entityManager)
+Game::Game(sf::RenderWindow& sfWindow) : sfWindow(sfWindow), entityManager(entityManager)
 {
+	this->entityManager.loadEntities();
 
 	this->sfText = sf::Text();
 	this->sfFont = sf::Font();
 
-	this->entityManager.spawnPickup();
+	//this->entityManager.spawnPickup();
 
 	if (!sfFont.loadFromFile("resources/Consolas.ttf"))
 	{
@@ -28,12 +29,12 @@ Game::Game(sf::RenderWindow& sfWindow, EntityManager entityManager) : sfWindow(s
 	this->sfText.setCharacterSize(16);
 };
 
-// TOCHECK: move keyboard input into input method?
-bool Game::update() 
+//// TOCHECK: move keyboard input into input method?
+bool Game::update()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 	{
-		
+
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
@@ -62,30 +63,30 @@ void Game::renderStart()
 
 void Game::renderGrid()
 {
-	int xSize = this->entityManager.getGrid().getWidth();
-	int ySize = this->entityManager.getGrid().getHeight();
+	int xSize = this->entityManager.getGrid()->getWidth();
+	int ySize = this->entityManager.getGrid()->getHeight();
 	std::stringstream sStream;
 	sf::String sfString;
-	
+
 	for (int y = 0; y < ySize; y++)
 	{
 		for (int x = 0; x < xSize; x++)
 		{
-			if (y == 0 || x == 0 || y == ySize-1)
+			if (y == 0 || x == 0 || y == ySize - 1)
 			{
 				sStream << "#";
-				if (x == xSize - 1) 
+				if (x == xSize - 1)
 				{
 					sStream << std::endl;
 				}
-			} 
-			else if (x == xSize-1)
+			}
+			else if (x == xSize - 1)
 			{
 				sStream << "#" << std::endl;
 			}
 			else
 			{
-				Entity* entity = this->entityManager.getGrid().getEntityAt(x, y);
+				Entity* entity = this->entityManager.getGrid()->getEntityAt(x, y);
 
 				if (entity != nullptr)
 				{
@@ -131,13 +132,13 @@ void Game::gameLoop()
 			}
 		}
 
- 		if (elapsedTime.asMilliseconds() > (16.6*1000) )
+		if (elapsedTime.asMilliseconds() > (16.6 * 1000))
 		{
 			this->running = this->update();
 			this->mainRender();
 			elapsedTime = clock.restart();
 		}
-		
+
 		this->sfWindow.clear();
 		this->sfWindow.draw(this->sfText);
 		this->sfWindow.display();

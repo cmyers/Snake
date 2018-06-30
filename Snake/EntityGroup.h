@@ -1,3 +1,4 @@
+#pragma once
 #ifndef ENTITYGROUP_HPP
 #define ENTITYGROUP_HPP
 
@@ -8,7 +9,7 @@ class EntityManager;
 
 class EntityGroup
 {
-protected: 
+protected:
 	std::deque<Entity*> entities;
 	bool virtual isInGroup(Entity *entity);
 	EntityManager &entityManager;

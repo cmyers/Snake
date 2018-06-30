@@ -2,8 +2,9 @@
 #include "Grid.h"
 
 Grid::Grid() {}
+Grid::~Grid() {}
 
-Grid::Grid(int xSize, int ySize) 
+Grid::Grid(int xSize, int ySize)
 {
 	this->entities = std::vector<std::vector<Entity*>>(ySize, std::vector<Entity*>(xSize));
 };

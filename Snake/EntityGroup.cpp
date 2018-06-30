@@ -1,9 +1,8 @@
-#pragma once
 #include "stdafx.h"
 #include "EntityGroup.h"
 #include "EntityManager.h"
 
-EntityGroup::EntityGroup() : entityManager(entityManager){}
+EntityGroup::EntityGroup() : entityManager(entityManager) {}
 
 EntityGroup::EntityGroup(EntityManager& entityManager) : entityManager(entityManager) {}
 

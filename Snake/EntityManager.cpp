@@ -1,20 +1,30 @@
 #include "stdafx.h"
-#include "Pickup.h"
+#include "EntityManager.h"
 #include "Snake.h"
+#include "Pickup.h"
 
-//Snake snake;
-//Grid grid;
-
-EntityManager::EntityManager() {} //: grid(grid), entityGroup(snake) {}
+EntityManager::EntityManager() {}
 
 EntityManager::~EntityManager()
 {
+	delete this->grid;
 	delete this->entityGroup;
 }
 
-EntityManager::EntityManager(Grid grid) : grid(grid)
+bool EntityManager::loadEntities()
 {
+	//this can be responsible for creating 1 grid at a time and initialising the player and pickups inside this grid
+	//this means we can reload a grid using different parameters if we want different levels etc. For now this is hard coded to a fixed size
+	delete this->grid; //delete the original grid
+	this->grid = new Grid(60, 30);
 	this->entityGroup = new Snake((*this));
+	this->spawnPickup();
+	return true;
+}
+
+Grid* EntityManager::getGrid()
+{
+	return this->grid;
 }
 
 void EntityManager::spawnPickup() // TODO: Create an entity manager class to handle these types of methods?
@@ -23,22 +33,17 @@ void EntityManager::spawnPickup() // TODO: Create an entity manager class to han
 
 	while (pickup == nullptr)
 	{
-		int x = rand() % ((this->grid.getWidth() - 1) + 1);
-		int y = rand() % ((this->grid.getHeight() - 1) + 1);
+		int x = rand() % ((this->grid->getWidth() - 1) + 1);
+		int y = rand() % ((this->grid->getHeight() - 1) + 1);
 
-		if (this->grid.getEntityAt(x, y) == nullptr)
+		if (this->grid->getEntityAt(x, y) == nullptr)
 		{
 			pickup = new Pickup(0, x, y, true, "Egg", 10);
 			break;
 		}
 	}
 
-	this->grid.addEntity(pickup);
-}
-
-Grid EntityManager::getGrid()
-{
-	return this->grid;
+	this->grid->addEntity(pickup);
 }
 
 template<typename T>
@@ -48,15 +53,3 @@ T* EntityManager::getEntityGroup()
 }
 
 template Snake* EntityManager::getEntityGroup<Snake>();
-
-//void EntityManager::consumePickup(Entity *entity)
-//{
-//	for (int i = 0; i < this->pickups.size() - 1; i++)
-//	{
-//		if (*this->pickups.at(i) == entity)
-//		{
-//			this->pickups.erase(this->pickups.begin() + i);
-//			return;
-//		}
-//	}
-//}

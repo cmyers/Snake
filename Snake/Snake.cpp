@@ -1,22 +1,22 @@
 #include "stdafx.h"
 #include "Snake.h"
-#include "Pickup.h"
 
 Snake::Snake() : EntityGroup(entityManager) {}
 Snake::~Snake() {}
 
 Snake::Snake(EntityManager& entityManager) : EntityGroup(entityManager)
 {
+	this->dir = Direction::LEFT;
 	for (int i = 0; i < 4; i++)
 	{
-		this->entities.push_back(new Entity(i, i+5, 5, true));
-		this->entityManager.getGrid().addEntity(this->entities.at(i));
+		this->entities.push_back(new Entity(i, i + 5, 5, true));
+		this->entityManager.getGrid()->addEntity(this->entities.at(i));
 	}
 }
 
 bool Snake::checkCollision(int x, int y)
 {
-	Entity* entity = this->entityManager.getGrid().getEntityAt(x, y);
+	Entity* entity = this->entityManager.getGrid()->getEntityAt(x, y);
 
 	if (this->isInGroup(entity))
 	{
@@ -35,8 +35,9 @@ bool Snake::checkCollision(int x, int y)
 
 void Snake::eat(Entity* entity)
 {
-	this->entityManager.getGrid().removeEntity(entity);
+	this->entityManager.getGrid()->removeEntity(entity);
 	this->addHead();
+	this->entityManager.spawnPickup();
 }
 
 void Snake::setSpeed(int speed)
@@ -57,7 +58,7 @@ void Snake::updateScore()
 void Snake::deleteTail()
 {
 	Entity* eTail = this->entities.at(this->entities.size() - 1);
-	this->entityManager.getGrid().removeEntity(eTail);
+	this->entityManager.getGrid()->removeEntity(eTail);
 	this->entities.pop_back();
 }
 
@@ -68,54 +69,54 @@ bool Snake::addHead()
 
 	switch (this->dir)
 	{
-		case Direction::UP:
-			y--;
+	case Direction::UP:
+		y--;
 
-			if (y == 0)
-			{
-				y = this->entityManager.getGrid().getHeight() - 2;
-			}
-			break;
-		case Direction::DOWN:
-			y++;
+		if (y == 0)
+		{
+			y = this->entityManager.getGrid()->getHeight() - 2;
+		}
+		break;
+	case Direction::DOWN:
+		y++;
 
-			if (y == this->entityManager.getGrid().getHeight() - 1)
-			{
-				y = 1;
-			}
-			break;
-		case Direction::LEFT:
-			x--;
+		if (y == this->entityManager.getGrid()->getHeight() - 1)
+		{
+			y = 1;
+		}
+		break;
+	case Direction::LEFT:
+		x--;
 
-			if (x == 0)
-			{
-				x = this->entityManager.getGrid().getWidth() - 2;
-			}
-			break;
-		case Direction::RIGHT:
-			x++;
+		if (x == 0)
+		{
+			x = this->entityManager.getGrid()->getWidth() - 2;
+		}
+		break;
+	case Direction::RIGHT:
+		x++;
 
-			if (x == this->entityManager.getGrid().getWidth() - 1)
-			{
-				x = 1;
-			}
-			break;
-		case Direction::STOP:
-		default:
-			break;
+		if (x == this->entityManager.getGrid()->getWidth() - 1)
+		{
+			x = 1;
+		}
+		break;
+	case Direction::STOP:
+	default:
+		break;
 	}
 
 	if (!this->checkCollision(x, y))
 	{
 		Entity* newHead = new Entity(0, x, y, true);
 		this->entities.push_front(newHead);
-		this->entityManager.getGrid().addEntity(newHead);
+		this->entityManager.getGrid()->addEntity(newHead);
 		return true;
 	}
 	return false;
-	
+
 }
-		
+
 bool Snake::moveSnake()
 {
 	if (this->addHead())
@@ -133,33 +134,33 @@ void Snake::changeDirection(Direction dir)
 {
 	switch (dir)
 	{
-		case Direction::UP:
-			if (this->dir == Direction::DOWN)
-			{
-				return;
-			}
-			break;
-		case Direction::DOWN:
-			if (this->dir == Direction::UP)
-			{
-				return;
-			}	
-			break;
-		case Direction::LEFT:
-			if (this->dir == Direction::RIGHT)
-			{
-				return;
-			}
-			break;
-		case Direction::RIGHT:
-			if (this->dir == Direction::LEFT)
-			{
-				return;
-			}
-			break;
-		case Direction::STOP:
-		default:
-			break;	
+	case Direction::UP:
+		if (this->dir == Direction::DOWN)
+		{
+			return;
+		}
+		break;
+	case Direction::DOWN:
+		if (this->dir == Direction::UP)
+		{
+			return;
+		}
+		break;
+	case Direction::LEFT:
+		if (this->dir == Direction::RIGHT)
+		{
+			return;
+		}
+		break;
+	case Direction::RIGHT:
+		if (this->dir == Direction::LEFT)
+		{
+			return;
+		}
+		break;
+	case Direction::STOP:
+	default:
+		break;
 	}
 	this->dir = dir;
 }
