@@ -8,7 +8,7 @@
 class EntityManager
 {
 private:
-	Grid * grid; //only ever one grid
+	Grid* grid; //only ever one grid
 	EntityGroup* entityGroup; //TODO: we may want multiple entitygroups in the future for other players, enemies and pickups
 public:
 	bool loadEntities();

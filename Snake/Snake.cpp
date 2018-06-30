@@ -69,41 +69,40 @@ bool Snake::addHead()
 
 	switch (this->dir)
 	{
-	case Direction::UP:
-		y--;
+		case Direction::UP:
+			y--;
 
-		if (y == 0)
-		{
-			y = this->entityManager.getGrid()->getHeight() - 2;
-		}
-		break;
-	case Direction::DOWN:
-		y++;
+			if (y == 0)
+			{
+				y = this->entityManager.getGrid()->getHeight() - 2;
+			}
+			break;
+		case Direction::DOWN:
+			y++;
 
-		if (y == this->entityManager.getGrid()->getHeight() - 1)
-		{
-			y = 1;
-		}
-		break;
-	case Direction::LEFT:
-		x--;
+			if (y == this->entityManager.getGrid()->getHeight() - 1)
+			{
+				y = 1;
+			}
+			break;
+		case Direction::LEFT:
+			x--;
 
-		if (x == 0)
-		{
-			x = this->entityManager.getGrid()->getWidth() - 2;
-		}
-		break;
-	case Direction::RIGHT:
-		x++;
+			if (x == 0)
+			{
+				x = this->entityManager.getGrid()->getWidth() - 2;
+			}
+			break;
+		case Direction::RIGHT:
+			x++;
 
-		if (x == this->entityManager.getGrid()->getWidth() - 1)
-		{
-			x = 1;
-		}
-		break;
-	case Direction::STOP:
-	default:
-		break;
+			if (x == this->entityManager.getGrid()->getWidth() - 1)
+			{
+				x = 1;
+			}
+			break;
+		default:
+			break;
 	}
 
 	if (!this->checkCollision(x, y))
@@ -134,33 +133,32 @@ void Snake::changeDirection(Direction dir)
 {
 	switch (dir)
 	{
-	case Direction::UP:
-		if (this->dir == Direction::DOWN)
-		{
-			return;
-		}
-		break;
-	case Direction::DOWN:
-		if (this->dir == Direction::UP)
-		{
-			return;
-		}
-		break;
-	case Direction::LEFT:
-		if (this->dir == Direction::RIGHT)
-		{
-			return;
-		}
-		break;
-	case Direction::RIGHT:
-		if (this->dir == Direction::LEFT)
-		{
-			return;
-		}
-		break;
-	case Direction::STOP:
-	default:
-		break;
+		case Direction::UP:
+			if (this->dir == Direction::DOWN)
+			{
+				return;
+			}
+			break;
+		case Direction::DOWN:
+			if (this->dir == Direction::UP)
+			{
+				return;
+			}
+			break;
+		case Direction::LEFT:
+			if (this->dir == Direction::RIGHT)
+			{
+				return;
+			}
+			break;
+		case Direction::RIGHT:
+			if (this->dir == Direction::LEFT)
+			{
+				return;
+			}
+			break;
+		default:
+			break;
 	}
 	this->dir = dir;
 }
