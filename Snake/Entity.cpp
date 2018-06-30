@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Entity.h"
 
+using namespace SnakeGame;
+
 Entity::Entity()
 {
 	this->id = 0;

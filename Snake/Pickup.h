@@ -5,16 +5,19 @@
 #include "Entity.h"
 #include <iostream>
 
-class Pickup : public Entity
-{
-private:
-	int points;
-	std::string name;
-public:
-	Pickup(int id, int x, int y, bool collidable, std::string name, int points);
-	std::string getName();
-	int getPoints();
-	bool isConsumable();
-};
+namespace SnakeGame {
+
+	class Pickup : public Entity
+	{
+	private:
+		int points;
+		std::string name;
+	public:
+		Pickup(int id, int x, int y, bool collidable, std::string name, int points);
+		std::string getName();
+		int getPoints();
+		bool isConsumable();
+	};
+}
 
 #endif

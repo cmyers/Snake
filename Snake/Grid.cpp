@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Grid.h"
 
+using namespace SnakeGame;
+
 Grid::Grid() {}
 Grid::~Grid() {}
 

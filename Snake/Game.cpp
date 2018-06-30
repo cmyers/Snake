@@ -4,6 +4,8 @@
 #include "SFML/Graphics.hpp"
 #include "Snake.h"
 
+using namespace SnakeGame;
+
 sf::RenderWindow renderWindow;
 
 Game::Game() : sfWindow(renderWindow) {}
@@ -26,7 +28,7 @@ Game::Game(sf::RenderWindow& sfWindow) : sfWindow(sfWindow)
 
 	this->sfText.setFont(this->sfFont);
 	this->sfText.setFillColor(sf::Color::Red);
-	this->sfText.setCharacterSize(16);
+	this->sfText.setCharacterSize(15);
 };
 
 sf::Keyboard::Key Game::getInput()
@@ -117,8 +119,17 @@ void Game::renderGrid()
 			}
 		}
 	}
+	sStream << std::endl << this->renderScore();
 	sfString = sf::String(sStream.str());
 	sfText.setString(sfString);
+
+}
+
+std::string Game::renderScore()
+{
+	std::stringstream ss;
+	ss << "Score: " << this->entityManager.getEntityGroup<Snake>()->getScore();
+	return ss.str();
 }
 
 void Game::mainRender()

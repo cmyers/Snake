@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "Snake.h"
+#include "Pickup.h"
+
+using namespace SnakeGame;
 
 Snake::Snake() : EntityGroup(entityManager) {}
 Snake::~Snake() {}
@@ -33,8 +36,18 @@ bool Snake::checkCollision(int x, int y)
 	return false;
 }
 
+template<typename T>
+T* EntityManager::getEntityGroup()
+{
+	return dynamic_cast<T*>(this->entityGroup);
+}
+
+template Snake* EntityManager::getEntityGroup<Snake>();
+
 void Snake::eat(Entity* entity)
 {
+	Pickup* p = dynamic_cast<Pickup*>(entity);
+	this->updateScore(p->getPoints());
 	this->entityManager.getGrid()->removeEntity(entity);
 	this->addHead();
 	this->entityManager.spawnPickup();
@@ -50,9 +63,9 @@ int Snake::getSpeed()
 	return this->speed;
 }
 
-void Snake::updateScore()
+void Snake::updateScore(int add)
 {
-
+	this->score += add;
 }
 
 void Snake::deleteTail()
@@ -166,4 +179,9 @@ void Snake::changeDirection(Direction dir)
 Direction Snake::getDirection()
 {
 	return this->dir;
+}
+
+int Snake::getScore()
+{
+	return this->score;
 }

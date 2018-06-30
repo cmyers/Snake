@@ -2,6 +2,8 @@
 #include "Pickup.h"
 #include "Entity.h"
 
+using namespace SnakeGame;
+
 Pickup::Pickup(int id, int x, int y, bool collidable, std::string name, int points) : Entity(id, x, y, collidable)
 {
 	this->name = name;

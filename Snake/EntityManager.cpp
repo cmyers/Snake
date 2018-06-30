@@ -3,6 +3,8 @@
 #include "Snake.h"
 #include "Pickup.h"
 
+using namespace SnakeGame;
+
 EntityManager::EntityManager() {}
 
 EntityManager::~EntityManager()

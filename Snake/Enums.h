@@ -2,6 +2,10 @@
 #ifndef ENUMS_HPP
 #define ENUMS_HPP
 
-enum Direction { LEFT, RIGHT, UP, DOWN };
+namespace SnakeGame {
+
+	enum Direction { LEFT, RIGHT, UP, DOWN };
+
+}
 
 #endif

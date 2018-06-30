@@ -5,18 +5,22 @@
 #include "Entity.h"
 #include <deque>
 
-class EntityManager;
+namespace SnakeGame {
 
-class EntityGroup
-{
-protected:
-	std::deque<Entity*> entities;
-	bool virtual isInGroup(Entity *entity);
-	EntityManager &entityManager;
-public:
-	EntityGroup();
-	~EntityGroup();
-	EntityGroup(EntityManager &entityManager);
-};
+	class EntityManager;
+
+	class EntityGroup
+	{
+	protected:
+		std::deque<Entity*> entities;
+		bool virtual isInGroup(Entity *entity);
+		EntityManager &entityManager;
+	public:
+		EntityGroup();
+		~EntityGroup();
+		EntityGroup(EntityManager &entityManager);
+	};
+
+}
 
 #endif

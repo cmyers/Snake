@@ -5,21 +5,24 @@
 #include "Grid.h"
 #include "EntityGroup.h"
 
-class EntityManager
-{
-private:
-	Grid* grid; //only ever one grid
-	EntityGroup* entityGroup; //TODO: we may want multiple entitygroups in the future for other players, enemies and pickups
-public:
-	bool loadEntities();
-	Grid* getGrid();
-	void spawnPickup();
+namespace SnakeGame {
 
-	EntityManager();
-	~EntityManager();
+	class EntityManager
+	{
+	private:
+		Grid * grid; //only ever one grid
+		EntityGroup* entityGroup; //TODO: we may want multiple entitygroups in the future for other players, enemies and pickups
+	public:
+		bool loadEntities();
+		Grid* getGrid();
+		void spawnPickup();
 
-	template <class T>
-	T* getEntityGroup();
-};
+		EntityManager();
+		~EntityManager();
+
+		template <class T>
+		T* getEntityGroup();
+	};
+}
 
 #endif

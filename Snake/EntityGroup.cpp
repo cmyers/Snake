@@ -2,6 +2,8 @@
 #include "EntityGroup.h"
 #include "EntityManager.h"
 
+using namespace SnakeGame;
+
 EntityGroup::EntityGroup() : entityManager(entityManager) {}
 
 EntityGroup::EntityGroup(EntityManager& entityManager) : entityManager(entityManager) {}
