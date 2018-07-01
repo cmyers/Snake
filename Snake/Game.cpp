@@ -49,6 +49,7 @@ sf::Keyboard::Key Game::getInput()
 	{
 		return sf::Keyboard::Right;
 	}
+	return sf::Keyboard::Key::Unknown;
 }
 
 bool Game::update()
