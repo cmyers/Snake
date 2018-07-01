@@ -5,7 +5,7 @@
 
 using namespace SnakeGame;
 
-EntityManager::EntityManager() {}
+EntityManager::EntityManager() : randGen{ this->rd() } {}
 
 EntityManager::~EntityManager()
 {
@@ -19,7 +19,7 @@ bool EntityManager::loadEntities()
 	//this means we can reload a grid using different parameters if we want different levels etc. For now this is hard coded to a fixed size
 	delete this->grid; //delete the original grid
 	this->grid = new Grid(60, 30);
-	this->entityGroup = new Snake((*this));
+	this->entityGroup = new Snake(*this);
 	this->spawnPickup();
 	return true;
 }
@@ -29,14 +29,17 @@ Grid* EntityManager::getGrid()
 	return this->grid;
 }
 
-void EntityManager::spawnPickup() // TODO: Create an entity manager class to handle these types of methods?
+void EntityManager::spawnPickup()
 {
 	Pickup* pickup = nullptr;
 
 	while (pickup == nullptr)
 	{
-		int x = rand() % ((this->grid->getWidth() - 1) + 1);
-		int y = rand() % ((this->grid->getHeight() - 1) + 1);
+		std::uniform_int_distribution<> randomWidth(1, this->grid->getWidth() - 2);
+		int x = randomWidth(this->randGen);
+
+		std::uniform_int_distribution<> randomHeight(1, this->grid->getHeight() - 2);
+		int y = randomHeight(this->randGen);
 
 		if (this->grid->getEntityAt(x, y) == nullptr)
 		{
