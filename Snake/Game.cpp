@@ -52,10 +52,8 @@ sf::Keyboard::Key Game::getInput()
 	return sf::Keyboard::Key::Unknown;
 }
 
-bool Game::update()
+bool Game::update(sf::Keyboard::Key key)
 {
-	sf::Keyboard::Key key = this->getInput();
-
 	switch (key)
 	{
 		case sf::Keyboard::Down:
@@ -149,7 +147,7 @@ void Game::gameLoop()
 
 	while (this->sfWindow.isOpen() && this->running)
 	{
-		elapsedTime += clock.getElapsedTime();
+		elapsedTime = clock.getElapsedTime();
 		sf::Event event;
 
 		while (this->sfWindow.pollEvent(event))
@@ -162,15 +160,15 @@ void Game::gameLoop()
 			}
 		}
 
-		if (elapsedTime.asMilliseconds() > (16.6 * 1000))
+		sf::Keyboard::Key key = this->getInput();
+		if (elapsedTime.asMilliseconds() > 100)
 		{
-			this->running = this->update();
+			this->running = this->update(key);
 			this->mainRender();
+			this->sfWindow.clear();
+			this->sfWindow.draw(this->sfText);
+			this->sfWindow.display();
 			elapsedTime = clock.restart();
 		}
-
-		this->sfWindow.clear();
-		this->sfWindow.draw(this->sfText);
-		this->sfWindow.display();
 	}
 }
