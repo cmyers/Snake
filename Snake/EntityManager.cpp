@@ -9,8 +9,8 @@ EntityManager::EntityManager() : randGen{ this->rd() } {}
 
 EntityManager::~EntityManager()
 {
-	delete this->grid;
 	delete this->entityGroup;
+	delete this->grid;
 }
 
 bool EntityManager::loadEntities()

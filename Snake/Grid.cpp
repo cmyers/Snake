@@ -4,7 +4,16 @@
 using namespace SnakeGame;
 
 Grid::Grid() {}
-Grid::~Grid() {}
+Grid::~Grid()
+{
+	for (int i = 0; i < this->entities.size(); i++)
+	{
+		for (int j = 0; j < this->entities[i].size(); j++)
+		{
+			delete this->entities[i][j];
+		}
+	}
+}
 
 Grid::Grid(int xSize, int ySize)
 {
