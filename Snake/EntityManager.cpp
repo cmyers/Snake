@@ -17,7 +17,9 @@ bool EntityManager::loadEntities()
 {
 	//this can be responsible for creating 1 grid at a time and initialising the player and pickups inside this grid
 	//this means we can reload a grid using different parameters if we want different levels etc. For now this is hard coded to a fixed size
-	delete this->grid; //delete the original grid
+	delete this->entityGroup;
+	delete this->grid;
+
 	this->grid = new Grid(60, 30);
 	this->entityGroup = new Snake(*this);
 	this->spawnPickup();
